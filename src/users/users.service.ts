@@ -1,3 +1,4 @@
+// src/users/users.service.ts
 import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import * as process from 'process';
@@ -8,7 +9,7 @@ dotenv.config();
 export interface User {
   userId: number;
   username: string;
-  passwordHash: string; // Store the hash, not the plain password
+  passwordHash: string;
 }
 
 @Injectable()
@@ -38,18 +39,5 @@ export class UsersService {
   async validatePassword(user: User, password: string): Promise<boolean> {
     const salt = process.env.PASSWORD_SALT || 'salt';
     return bcrypt.compare(password + salt, user.passwordHash);
-  }
-
-  async createUser(username: string, password: string): Promise<User> {
-    const salt = process.env.PASSWORD_SALT || 'salt';
-    const passwordHash = await bcrypt.hash(password + salt, 10);
-    const newUser: User = {
-      userId: this.users.length + 1, // In real app get it from database
-      username,
-      passwordHash, // Store the hashed password.
-    };
-    this.users.push(newUser);
-    console.log('New user created:', newUser);
-    return newUser;
   }
 }

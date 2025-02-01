@@ -1,4 +1,4 @@
-// sign-in.dto.ts
+// src/auth/dto/sign-in.dto.ts
 
 export class SignInDto {
   username: string;
