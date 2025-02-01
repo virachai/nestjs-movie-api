@@ -1,6 +1,5 @@
 // src/movies/movies.controller.ts
 import { Controller, Get, Query } from '@nestjs/common';
-// import { Controller, Get } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { MovieDto } from './dto/movie.dto';
 
@@ -46,18 +45,9 @@ export class MoviesController {
 
   @Get('only-on-netflix')
   async getOnlyOnNetflix(): Promise<MovieDto[]> {
-    return this.moviesService.fetchMovies('movie/now_playing');
-  }
-
-  @Get('popular')
-  async getpPpular(): Promise<MovieDto[]> {
-    return this.moviesService.fetchMovies(`list/8509994`);
-  }
-
-  @Get('list')
-  async getListMovie(): Promise<MovieDto[]> {
-    const listID = 8509993; // You can replace this with any list ID or make it dynamic
-    return this.moviesService.fetchMovieByListID(listID);
+    return this.moviesService.fetchMovies(
+      `account/${process.env.TMDB_ACCOUNT_ID}/favorite/movies`,
+    );
   }
 
   @Get('my-list')
