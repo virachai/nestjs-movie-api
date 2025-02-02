@@ -8,19 +8,22 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   private async getDataTrending(): Promise<{
-    billboard: MovieDto;
+    billboard: MovieDto[];
     trending: MovieDto[];
   }> {
-    const trending = await this.moviesService.fetchMovies('trending/movie/day');
+    const trending = await this.moviesService.fetchMovies(
+      'trending/movie/week',
+    );
     const hour = new Date().getHours();
     const billboardIndex = hour % trending.length;
-    const [billboard] = trending.splice(billboardIndex, 1);
+    // const [billboard] = trending.splice(billboardIndex, 1);
+    const billboard = trending.splice(billboardIndex, 1);
 
     return { billboard, trending };
   }
 
   @Get('billboard')
-  async getBillboard(): Promise<MovieDto> {
+  async getBillboard(): Promise<MovieDto[]> {
     const { billboard } = await this.getDataTrending();
     return billboard;
   }
@@ -43,7 +46,7 @@ export class MoviesController {
     return this.moviesService.fetchMovies('movie/now_playing', Number(userId));
   }
 
-  @Get('only-on-netflix')
+  @Get('exclusive')
   async getOnlyOnNetflix(): Promise<MovieDto[]> {
     return this.moviesService.fetchMovies(
       `account/${process.env.TMDB_ACCOUNT_ID}/favorite/movies`,
