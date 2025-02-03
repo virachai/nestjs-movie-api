@@ -27,21 +27,26 @@ export class MoviesService {
     return this.mapMoviesToDto(data.results);
   }
 
-  async fetchMovieByListID(listID: number): Promise<MovieDto[]> {
-    // Fetch data from the TMDB API with a list ID
-    const { data } = await firstValueFrom(
-      this.httpService.get<{
-        items: any[];
-      }>(`https://api.themoviedb.org/3/list/${listID}`, {
-        headers: {
-          Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
-          accept: 'application/json',
-        },
-      }),
-    );
+  async fetchMovieById(id: string): Promise<MovieDto | null> {
+    try {
+      const { data } = await firstValueFrom(
+        this.httpService.get<MovieDto>(
+          `https://api.themoviedb.org/3/movie/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
+              accept: 'application/json',
+            },
+          },
+        ),
+      );
 
-    // Map the results to the MovieDto format
-    return this.mapMoviesToDto(data.items);
+      // Map the result to the MovieDto format
+      return this.mapMoviesToDto([data])[0] || null; // If no data, return null
+    } catch (error) {
+      console.error('Error fetching movie by ID:', error);
+      return null; // Return null if there's an error fetching the movie data
+    }
   }
 
   // Helper function to map the movie data to MovieDto format
@@ -55,6 +60,7 @@ export class MoviesService {
       release_date: movie.release_date,
       genre_ids: movie.genre_ids,
       release_year: new Date(movie.release_date).getFullYear(),
+      genres: movie.genres,
     }));
   }
 }

@@ -1,5 +1,11 @@
 // src/movies/movies.controller.ts
-import { Controller, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  NotFoundException,
+  Param,
+} from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { MovieDto } from './dto/movie.dto';
 
@@ -16,7 +22,6 @@ export class MoviesController {
     );
     const hour = new Date().getHours();
     const billboardIndex = hour % trending.length;
-    // const [billboard] = trending.splice(billboardIndex, 1);
     const billboard = trending.splice(billboardIndex, 1);
 
     return { billboard, trending };
@@ -41,9 +46,17 @@ export class MoviesController {
 
   @Get('continue-watching')
   async getContinueWatching(
-    @Query('userId') userId: string,
+    @Query('profileId') profileId: string,
   ): Promise<MovieDto[]> {
-    return this.moviesService.fetchMovies('movie/now_playing', Number(userId));
+    // Validate profileId
+    if (!profileId || Number(profileId) > 5) {
+      throw new NotFoundException('Profile not found');
+    }
+
+    return this.moviesService.fetchMovies(
+      'movie/now_playing',
+      Number(profileId),
+    );
   }
 
   @Get('exclusive')
@@ -54,10 +67,27 @@ export class MoviesController {
   }
 
   @Get('my-list')
-  async getMyList(@Query('userId') userId: string): Promise<MovieDto[]> {
+  async getMyList(@Query('profileId') profileId: string): Promise<MovieDto[]> {
+    // Validate profileId
+    if (!profileId || Number(profileId) > 5) {
+      throw new NotFoundException('Profile not found');
+    }
+
     return this.moviesService.fetchMovies(
       `account/${process.env.TMDB_ACCOUNT_ID}/watchlist/movies`,
-      Number(userId),
+      Number(profileId),
     );
+  }
+
+  @Get(':id')
+  async getMovieById(@Param('id') id: string): Promise<MovieDto> {
+    // Fetch the movie data from the service
+    const movie = await this.moviesService.fetchMovieById(id);
+
+    if (!movie) {
+      throw new NotFoundException('Movie not found');
+    }
+
+    return movie;
   }
 }
