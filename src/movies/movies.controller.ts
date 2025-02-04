@@ -117,6 +117,16 @@ export class MoviesController {
     );
   }
 
+  @Get('latest')
+  async getLatest(@Query('page') page: number = 1): Promise<MovieDto[]> {
+    const data = await this.moviesService.fetchMovies('movie/latest', page);
+    return data.filter(
+      (movie) =>
+        movie.poster_path.endsWith('jpg') &&
+        movie.backdrop_path.endsWith('jpg'),
+    );
+  }
+
   @Get(':id')
   async getMovieById(@Param('id') id: string): Promise<MovieDto> {
     // Fetch the movie data from the service
