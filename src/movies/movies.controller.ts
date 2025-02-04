@@ -97,6 +97,26 @@ export class MoviesController {
     );
   }
 
+  @Get('show')
+  async getShows(@Query('page') page: number = 1): Promise<MovieDto[]> {
+    const data = await this.moviesService.fetchMovies('discover/tv', page);
+    return data.filter(
+      (movie) =>
+        movie.poster_path.endsWith('jpg') &&
+        movie.backdrop_path.endsWith('jpg'),
+    );
+  }
+
+  @Get('movies')
+  async getMovies(@Query('page') page: number = 1): Promise<MovieDto[]> {
+    const data = await this.moviesService.fetchMovies('discover/movie', page);
+    return data.filter(
+      (movie) =>
+        movie.poster_path.endsWith('jpg') &&
+        movie.backdrop_path.endsWith('jpg'),
+    );
+  }
+
   @Get(':id')
   async getMovieById(@Param('id') id: string): Promise<MovieDto> {
     // Fetch the movie data from the service
