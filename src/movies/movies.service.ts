@@ -49,6 +49,33 @@ export class MoviesService {
     }
   }
 
+  async searchMovies(query: string, page: number = 1): Promise<MovieDto[]> {
+    try {
+      const { data } = await firstValueFrom(
+        this.httpService.get<{
+          page: number;
+          results: any[];
+          total_pages: number;
+          total_results: number;
+        }>(
+          `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&query=${query}&page=${page}`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
+              accept: 'application/json',
+            },
+          },
+        ),
+      );
+
+      // Map the results to the MovieDto format
+      return this.mapMoviesToDto(data.results);
+    } catch (error) {
+      console.error('Error searching movies:', error);
+      return []; // Return an empty array if there's an error
+    }
+  }
+
   // Helper function to map the movie data to MovieDto format
   private mapMoviesToDto(movies: any[]): MovieDto[] {
     return movies.map((movie: MovieDto) => ({

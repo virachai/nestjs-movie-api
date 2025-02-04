@@ -79,6 +79,24 @@ export class MoviesController {
     );
   }
 
+  @Get('search')
+  async searchMovies(
+    @Query('query') query: string,
+    @Query('page') page: number = 1,
+  ): Promise<MovieDto[]> {
+    if (!query) {
+      const list1 = await this.moviesService.fetchMovies('movie/popular');
+      const list2 = await this.moviesService.fetchMovies('movie/popular', 2);
+      return [...list1, ...list2];
+    }
+    const data = await this.moviesService.searchMovies(query, page);
+    return data.filter(
+      (movie) =>
+        movie.poster_path.endsWith('jpg') &&
+        movie.backdrop_path.endsWith('jpg'),
+    );
+  }
+
   @Get(':id')
   async getMovieById(@Param('id') id: string): Promise<MovieDto> {
     // Fetch the movie data from the service
