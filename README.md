@@ -1,99 +1,122 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NestJS Movie API Gateway
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a RESTful API for managing movies, built with [NestJS](https://nestjs.com/). It provides a comprehensive set of features for reading movie data, including fetching trending, must-watch, exclusive movies, and integration with external APIs like TMDB (The Movie Database).
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- **Movie Management**:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+  - Read movie details and metadata.
+  - Search for movies by title, genre, or other attributes.
+  - Fetch trending, must-watch, and exclusive movies.
+  - Continue watching and manage a personal watchlist.
 
-## Project setup
+- **Authentication & Authorization**:
 
-```bash
-$ npm install
-```
+  - User login with JWT (JSON Web Token) authentication.
+  - Role-based access control for specific endpoints.
 
-## Compile and run the project
+- **Integration with TMDB**:
 
-```bash
-# development
-$ npm run start
+  - Fetch movie data from TMDB using the TMDB API.
+  - Sync movie details, posters, and metadata.
 
-# watch mode
-$ npm run start:dev
+- **Demo Users**:
+  - Pre-configured demo users for testing purposes.
 
-# production mode
-$ npm run start:prod
-```
+## Installation
 
-## Run tests
+1. Clone the repository:
 
-```bash
-# unit tests
-$ npm run test
+   ```bash
+   git clone https://github.com/yourusername/nestjs-movie-api.git
+   cd nestjs-movie-api
+   ```
 
-# e2e tests
-$ npm run test:e2e
+2. Install dependencies:
 
-# test coverage
-$ npm run test:cov
-```
+   ```bash
+   npm install
+   ```
 
-## Deployment
+3. Create a `.env` file in the root directory and add the required environment variables:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+   ```env
+   DATABASE_URL=your_database_url
+   JWT_SECRET=your_jwt_secret
+   TMDB_API_KEY=your_tmdb_api_key
+   TMDB_READ_ACCESS_TOKEN=your_tmdb_read_access_token
+   TMDB_ACCOUNT_ID=your_tmdb_account_id
+   DEMO_USERNAME_01=virachai
+   DEMO_PASSWORD_01=hashedPassword
+   DEMO_USERNAME_02=netflix
+   DEMO_PASSWORD_02=hashedPassword
+   SALT_ROUNDS=10
+   ```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+4. Run the application:
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+   ```bash
+   npm run start:dev
+   ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+   The API will be available at `http://localhost:4000`.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## Endpoints
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Movies
 
-## Support
+- **GET `/movies/billboard`** - Get movies currently featured in the billboard.
+- **GET `/movies/trending`** - Get trending movies.
+- **GET `/movies/must-watch`** - Get must-watch movies.
+- **GET `/movies/exclusive`** - Get exclusive movies.
+- **GET `/movies/search`** - Search for movies by title or genre.
+- **GET `/movies/show`** - Get TV show.
+- **GET `/movies/movies`** Get the movies.
+- **GET `/movies/latest`** - Get the latest movies.
+- **GET `/movies/continue-watching`** - Get movies for the "Continue Watching" section.
+- **GET `/movies/my-list`** - Get movies in the user's watchlist.
+- **GET `/movies/:id`** - Get details of a specific movie.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Authentication
 
-## Stay in touch
+- **POST `/auth/login`** - Log in to the application and receive a JWT token.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Environment Variables
+
+| Variable Name            | Description                                 |
+| ------------------------ | ------------------------------------------- |
+| `DATABASE_URL`           | URL for the database connection.            |
+| `JWT_SECRET`             | Secret key for JWT token generation.        |
+| `TMDB_API_KEY`           | API key for TMDB integration.               |
+| `TMDB_READ_ACCESS_TOKEN` | Read access token for TMDB.                 |
+| `TMDB_ACCOUNT_ID`        | TMDB account ID for API requests.           |
+| `DEMO_USERNAME_01`       | Username for the first demo user.           |
+| `DEMO_PASSWORD_01`       | Password for the first demo user.           |
+| `DEMO_USERNAME_02`       | Username for the second demo user.          |
+| `DEMO_PASSWORD_02`       | Password for the second demo user.          |
+| `SALT_ROUNDS`            | Number of salt rounds for password hashing. |
+
+## Demo Users
+
+Two demo users are pre-configured for testing:
+
+1. **Username**: `virachai`  
+   **Password**: `hashedPassword`
+
+2. **Username**: `netflix`  
+   **Password**: `hashedPassword`
+
+---
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [NestJS](https://nestjs.com/) for the framework.
+- [TMDB](https://www.themoviedb.org/) for movie data.
+- Contributors and open-source community.
