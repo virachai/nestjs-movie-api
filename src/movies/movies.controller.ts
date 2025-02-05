@@ -44,40 +44,40 @@ export class MoviesController {
     return this.moviesService.fetchMovies('movie/top_rated');
   }
 
-  @Get('continue-watching')
-  async getContinueWatching(
-    @Query('profileId') profileId: string,
-  ): Promise<MovieDto[]> {
-    // Validate profileId
-    if (!profileId || Number(profileId) > 5) {
-      throw new NotFoundException('Profile not found');
-    }
+  // @Get('continue-watching')
+  // async getContinueWatching(
+  //   @Query('profileId') profileId: string,
+  // ): Promise<MovieDto[]> {
+  //   // Validate profileId
+  //   if (!profileId || Number(profileId) > 5) {
+  //     throw new NotFoundException('Profile not found');
+  //   }
 
-    return this.moviesService.fetchMovies(
-      'movie/now_playing',
-      Number(profileId),
-    );
-  }
+  //   return this.moviesService.fetchMovies(
+  //     'movie/now_playing',
+  //     Number(profileId),
+  //   );
+  // }
 
-  @Get('exclusive')
-  async getOnlyOnNetflix(): Promise<MovieDto[]> {
-    return this.moviesService.fetchMovies(
-      `account/${process.env.TMDB_ACCOUNT_ID}/favorite/movies`,
-    );
-  }
+  // @Get('exclusive')
+  // async getOnlyOnNetflix(): Promise<MovieDto[]> {
+  //   return this.moviesService.fetchMovies(
+  //     `account/${process.env.TMDB_ACCOUNT_ID}/favorite/movies`,
+  //   );
+  // }
 
-  @Get('my-list')
-  async getMyList(@Query('profileId') profileId: string): Promise<MovieDto[]> {
-    // Validate profileId
-    if (!profileId || Number(profileId) > 5) {
-      throw new NotFoundException('Profile not found');
-    }
+  // @Get('my-list')
+  // async getMyList(@Query('profileId') profileId: string): Promise<MovieDto[]> {
+  //   // Validate profileId
+  //   if (!profileId || Number(profileId) > 5) {
+  //     throw new NotFoundException('Profile not found');
+  //   }
 
-    return this.moviesService.fetchMovies(
-      `account/${process.env.TMDB_ACCOUNT_ID}/watchlist/movies`,
-      Number(profileId),
-    );
-  }
+  //   return this.moviesService.fetchMovies(
+  //     `account/${process.env.TMDB_ACCOUNT_ID}/watchlist/movies`,
+  //     Number(profileId),
+  //   );
+  // }
 
   @Get('search')
   async searchMovies(
@@ -120,6 +120,37 @@ export class MoviesController {
   @Get('latest')
   async getLatest(@Query('page') page: number = 1): Promise<MovieDto[]> {
     return this.moviesService.fetchMovies('trending/all/day', page);
+  }
+
+  @Get('continue-watching')
+  async getContinueWatching(
+    @Query('profileId') profileId: string = '1', // Default value is "1"
+  ): Promise<MovieDto[]> {
+    // Validate profileId
+    if (!profileId || Number(profileId) > 5) {
+      throw new NotFoundException('Profile not found');
+    }
+
+    return this.moviesService.fetchMovies(
+      'movie/now_playing',
+      Number(profileId),
+    );
+  }
+
+  @Get('my-list')
+  async getMyList(
+    @Query('profileId') profileId: string = '1',
+  ): Promise<MovieDto[]> {
+    // Default value is "1"
+    // Validate profileId
+    if (!profileId || Number(profileId) > 5) {
+      throw new NotFoundException('Profile not found');
+    }
+
+    return this.moviesService.fetchMovies(
+      `account/${process.env.TMDB_ACCOUNT_ID}/watchlist/movies`,
+      Number(profileId),
+    );
   }
 
   @Get(':id')
