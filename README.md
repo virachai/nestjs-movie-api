@@ -9,12 +9,10 @@ This project is a RESTful API for managing movies, built with [NestJS](https://n
   - Read movie details and metadata.
   - Search for movies by title, genre, or other attributes.
   - Fetch trending, must-watch, and exclusive movies.
-  - Continue watching and manage a personal watchlist.
 
 - **Authentication & Authorization**:
 
   - User login with JWT (JSON Web Token) authentication.
-  - Role-based access control for specific endpoints.
 
 - **Integration with TMDB**:
 
