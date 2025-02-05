@@ -51,34 +51,6 @@ export class MoviesController {
     );
   }
 
-  // @Get('continue-watching')
-  // async getContinueWatching(
-  //   @Query('profileId') profileId: string,
-  // ): Promise<MovieDto[]> {
-  //   // Validate profileId
-  //   if (!profileId || Number(profileId) > 5) {
-  //     throw new NotFoundException('Profile not found');
-  //   }
-
-  //   return this.moviesService.fetchMovies(
-  //     'movie/now_playing',
-  //     Number(profileId),
-  //   );
-  // }
-
-  // @Get('my-list')
-  // async getMyList(@Query('profileId') profileId: string): Promise<MovieDto[]> {
-  //   // Validate profileId
-  //   if (!profileId || Number(profileId) > 5) {
-  //     throw new NotFoundException('Profile not found');
-  //   }
-
-  //   return this.moviesService.fetchMovies(
-  //     `account/${process.env.TMDB_ACCOUNT_ID}/watchlist/movies`,
-  //     Number(profileId),
-  //   );
-  // }
-
   @Get('search')
   async searchMovies(
     @Query('query') query: string,
