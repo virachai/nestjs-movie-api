@@ -44,6 +44,13 @@ export class MoviesController {
     return this.moviesService.fetchMovies('movie/top_rated');
   }
 
+  @Get('exclusive')
+  async getOnlyOnNetflix(): Promise<MovieDto[]> {
+    return this.moviesService.fetchMovies(
+      `account/${process.env.TMDB_ACCOUNT_ID}/favorite/movies`,
+    );
+  }
+
   // @Get('continue-watching')
   // async getContinueWatching(
   //   @Query('profileId') profileId: string,
@@ -56,13 +63,6 @@ export class MoviesController {
   //   return this.moviesService.fetchMovies(
   //     'movie/now_playing',
   //     Number(profileId),
-  //   );
-  // }
-
-  // @Get('exclusive')
-  // async getOnlyOnNetflix(): Promise<MovieDto[]> {
-  //   return this.moviesService.fetchMovies(
-  //     `account/${process.env.TMDB_ACCOUNT_ID}/favorite/movies`,
   //   );
   // }
 
