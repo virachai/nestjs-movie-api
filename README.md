@@ -62,8 +62,6 @@ This project is a RESTful API for managing movies, built with [NestJS](https://n
 
    The API will be available at `http://localhost:4000`.
 
----
-
 ## Endpoints
 
 ### Movies
@@ -73,8 +71,7 @@ This project is a RESTful API for managing movies, built with [NestJS](https://n
 - **GET `/movies/must-watch`** - Get must-watch movies.
 - **GET `/movies/exclusive`** - Get exclusive movies.
 - **GET `/movies/search`** - Search for movies by title or genre.
-- **GET `/movies/show`** - Get TV show.
-- **GET `/movies/movies`** Get the movies.
+- **GET `/movies/show`** - Get details of a specific TV show (alternative endpoint).
 - **GET `/movies/latest`** - Get the latest movies.
 - **GET `/movies/continue-watching`** - Get movies for the "Continue Watching" section.
 - **GET `/movies/my-list`** - Get movies in the user's watchlist.
@@ -84,11 +81,47 @@ This project is a RESTful API for managing movies, built with [NestJS](https://n
 
 - **POST `/auth/login`** - Log in to the application and receive a JWT token.
 
+## Authentication Overview
+
+To authenticate and interact with protected endpoints, users must first log in using the `/auth/login` endpoint. Upon successful login, the server will respond with a JWT (JSON Web Token) that should be included in the `Authorization` header for subsequent requests to protected routes.
+
+### Login Process
+
+- **Request Body**:
+
+  The login request expects the following body:
+
+  ```json
+  {
+    "username": "yourUsername",
+    "password": "yourPassword"
+  }
+  ```
+
+- **Response**:
+
+  On successful authentication, the API returns an access token:
+
+  ```json
+  {
+    "access_token": "yourJWTtoken"
+  }
+  ```
+
+  The `access_token` should be included in the `Authorization` header of subsequent requests:
+
+  ```bash
+  Authorization: Bearer yourJWTtoken
+  ```
+
+### Error Handling
+
+- **401 Unauthorized**: If the credentials are invalid or missing, the server will respond with a `401 Unauthorized` status.
+
 ## Environment Variables
 
 | Variable Name            | Description                                 |
 | ------------------------ | ------------------------------------------- |
-| `DATABASE_URL`           | URL for the database connection.            |
 | `JWT_SECRET`             | Secret key for JWT token generation.        |
 | `TMDB_API_KEY`           | API key for TMDB integration.               |
 | `TMDB_READ_ACCESS_TOKEN` | Read access token for TMDB.                 |
@@ -108,15 +141,3 @@ Two demo users are pre-configured for testing:
 
 2. **Username**: `netflix`  
    **Password**: `hashedPassword`
-
----
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- [NestJS](https://nestjs.com/) for the framework.
-- [TMDB](https://www.themoviedb.org/) for movie data.
-- Contributors and open-source community.
