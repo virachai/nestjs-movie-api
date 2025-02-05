@@ -62,6 +62,22 @@ This project is a RESTful API for managing movies, built with [NestJS](https://n
 
    The API will be available at `http://localhost:4000`.
 
+## Swagger API Documentation
+
+The API also includes an interactive Swagger UI for exploring and testing the available endpoints. You can access the Swagger documentation by visiting:
+
+[Swagger UI](http://localhost:4000/api)
+
+You can perform all the API operations directly from this interface and view the API responses.
+
+**To enable Swagger UI**, make sure the `SWAGGER` environment variable is set to `1` in the `.env` file:
+
+```env
+SWAGGER=1
+```
+
+This will enable Swagger UI on the `/api` endpoint of your application.
+
 ## Endpoints
 
 ### Movies
@@ -131,6 +147,7 @@ To authenticate and interact with protected endpoints, users must first log in u
 | `DEMO_USERNAME_02`       | Username for the second demo user.          |
 | `DEMO_PASSWORD_02`       | Password for the second demo user.          |
 | `SALT_ROUNDS`            | Number of salt rounds for password hashing. |
+| `SWAGGER`                | Enable Swagger UI (set to `1` to enable).   |
 
 ## Demo Users
 
