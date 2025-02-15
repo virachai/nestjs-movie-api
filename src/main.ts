@@ -15,8 +15,10 @@ async function bootstrap() {
   //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   //   allowedHeaders: 'Content-Type, Accept',
   // });
+
+  const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || [];
   app.enableCors({
-    origin: ['https://nextjs-mee-webboard.vercel.app', 'http://localhost:3000'], // Add both URLs
+    origin: allowedOrigins, // Add both URLs
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Accept',
   });
