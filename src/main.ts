@@ -10,18 +10,18 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Enable CORS for all routes
-  // app.enableCors({
-  //   origin: '*',
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  //   allowedHeaders: 'Content-Type, Accept',
-  // });
-
-  const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || [];
   app.enableCors({
-    origin: allowedOrigins, // Add both URLs
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Accept',
   });
+
+  // const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || [];
+  // app.enableCors({
+  //   origin: allowedOrigins, // Add both URLs
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   allowedHeaders: 'Content-Type, Accept',
+  // });
 
   // Enable Swagger conditionally based on the SWAGGER environment variable
   const swagger_env = process.env.SWAGGER || 0;

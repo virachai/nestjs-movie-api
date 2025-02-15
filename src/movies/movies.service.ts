@@ -80,8 +80,8 @@ export class MoviesService {
   private mapMoviesToDto(movies: any[]): MovieDto[] {
     return movies.map((movie: MovieDto) => ({
       id: movie.id,
-      backdrop_path: 'https://image.tmdb.org/t/p/w1280/' + movie.backdrop_path,
-      poster_path: 'https://image.tmdb.org/t/p/w500/' + movie.poster_path,
+      backdrop_path: 'https://image.tmdb.org/t/p/w1280' + movie.backdrop_path,
+      poster_path: 'https://image.tmdb.org/t/p/w500' + movie.poster_path,
       title: movie.title,
       overview: movie.overview,
       release_date: movie.release_date,
