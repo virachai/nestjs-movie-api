@@ -38,7 +38,11 @@ export class AboardService {
   }
 
   async getPosts(): Promise<Post[]> {
-    return this.postModel.find().exec();
+    return this.postModel
+      .find() // Find all posts
+      .sort({ createdAt: -1 }) // Sort by 'createdAt' field in descending order
+      .limit(30) // Limit the results to 30 posts
+      .exec(); // Execute the query
   }
 
   async createPost(createPostDto: CreatePostDto): Promise<Post> {
