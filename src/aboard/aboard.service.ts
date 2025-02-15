@@ -15,7 +15,6 @@ export class AboardService {
   ) {}
 
   async authenticate(username: string, pass: string): Promise<any> {
-    console.log('username: ', username);
     try {
       const response = await fetch('https://dummyjson.com/auth/login', {
         method: 'POST',

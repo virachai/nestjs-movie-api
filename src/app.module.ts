@@ -7,7 +7,6 @@ import { MoviesModule } from './movies/movies.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AboardModule } from './aboard/aboard.module';
 
-// Load environment variables from .env file
 dotenv.config();
 
 const dbURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce';

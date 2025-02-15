@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, ArrayMinSize } from 'class-validator';
 
 export class CreatePostDto {
   @IsString()
@@ -8,4 +8,9 @@ export class CreatePostDto {
   @IsString()
   @IsNotEmpty()
   content: string;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsString({ each: true })
+  tags: string[];
 }

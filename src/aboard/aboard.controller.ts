@@ -19,7 +19,6 @@ export class AboardController {
 
   @Post('auth')
   signIn(@Body() signInDto: SignInDto) {
-    console.log('signInDto: ', signInDto);
     return this.aboardService.authenticate(
       signInDto.username,
       signInDto.password,
