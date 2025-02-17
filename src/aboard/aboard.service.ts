@@ -37,6 +37,16 @@ export class AboardService {
     }
   }
 
+  // Fetch posts from the database by username
+  async getPostsByUsername(username: string): Promise<Post[]> {
+    return this.postModel
+      .find({ username }) // Find posts where username matches
+      .sort({ createdAt: -1 }) // Sort by 'createdAt' field in descending order
+      .limit(30) // Limit the results to 30 posts
+      .exec(); // Execute the query
+  }
+
+  // Fetch all posts
   async getPosts(): Promise<Post[]> {
     return this.postModel
       .find() // Find all posts
@@ -45,19 +55,23 @@ export class AboardService {
       .exec(); // Execute the query
   }
 
+  // Create a new post
   async createPost(createPostDto: CreatePostDto): Promise<Post> {
     const createdPost = new this.postModel(createPostDto);
     return createdPost.save();
   }
 
+  // Fetch a single post by ID
   async getPost(id: string): Promise<Post> {
     return this.postModel.findById(id).exec();
   }
 
+  // Fetch comments for a specific post
   async getPostComments(postId: string): Promise<Comment[]> {
     return this.commentModel.find({ postId }).exec();
   }
 
+  // Create a comment for a post
   async createComment(
     postId: string,
     createCommentDto: CreateCommentDto,
@@ -69,12 +83,14 @@ export class AboardService {
     return createdComment.save();
   }
 
+  // Update a post
   async updatePost(id: string, updatePostDto: UpdatePostDto): Promise<Post> {
     return this.postModel
       .findByIdAndUpdate(id, updatePostDto, { new: true })
       .exec();
   }
 
+  // Delete a post
   async deletePost(id: string): Promise<Post> {
     return this.postModel.findByIdAndDelete(id).exec();
   }
