@@ -108,9 +108,17 @@ export class AboardService {
     return createdPost.save();
   }
 
-  // Fetch a single post by ID
+  // // Fetch a single post by ID
+  // async getPost(id: string): Promise<Post> {
+  //   return this.postModel.findById(id).exec();
+  // }
+
+  // Fetch a single post by ID with populated comments data
   async getPost(id: string): Promise<Post> {
-    return this.postModel.findById(id).exec();
+    return this.postModel
+      .findById(id)
+      .populate('comments') // Assuming 'comments' is a reference to a Comment model
+      .exec();
   }
 
   // Fetch comments for a specific post
