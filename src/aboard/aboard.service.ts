@@ -115,15 +115,28 @@ export class AboardService {
 
   // Fetch a single post by ID with populated comments data
   async getPost(id: string): Promise<Post> {
-    return this.postModel
-      .findById(id)
-      .populate('comments') // Assuming 'comments' is a reference to a Comment model
-      .exec();
+    return this.postModel.findById(id).exec();
   }
 
   // Fetch comments for a specific post
+  // async getPostComments(postId: string): Promise<Comment[]> {
+  //   return this.commentModel.find({ postId }).exec();
+  // }
+
   async getPostComments(postId: string): Promise<Comment[]> {
-    return this.commentModel.find({ postId }).exec();
+    try {
+      // Find comments by postId and sort them by createdAt in descending order (newest first)
+      const comments = await this.commentModel
+        .find({ postId })
+        .sort({ createdAt: -1 }) // Sort by createdAt in descending order
+        .exec();
+
+      return comments;
+    } catch (error) {
+      // Handle any errors that occur during the query
+      console.error('Error fetching comments:', error);
+      throw new Error('Failed to fetch comments');
+    }
   }
 
   // Create a comment for a post
