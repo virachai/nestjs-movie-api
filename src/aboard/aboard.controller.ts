@@ -17,6 +17,7 @@ import { SignInDto } from '../auth/dto/sign-in.dto'; // Import the DTO for sign-
 export class AboardController {
   constructor(private readonly aboardService: AboardService) {}
 
+  // Sign in endpoint
   @Post('auth')
   signIn(@Body() signInDto: SignInDto) {
     return this.aboardService.authenticate(
@@ -25,26 +26,37 @@ export class AboardController {
     );
   }
 
+  // Get all posts
   @Get('posts')
   async getPosts() {
     return this.aboardService.getPosts();
   }
 
+  // Get posts by username
+  @Get('user/:username/posts')
+  async getPostsByUsername(@Param('username') username: string) {
+    return this.aboardService.getPostsByUsername(username);
+  }
+
+  // Create a new post
   @Post('posts')
   async createPost(@Body() createPostDto: CreatePostDto) {
     return this.aboardService.createPost(createPostDto);
   }
 
+  // Get a single post by ID
   @Get('posts/:id')
   async getPost(@Param('id') id: string) {
     return this.aboardService.getPost(id);
   }
 
+  // Get comments for a post
   @Get('posts/:id/comments')
   async getPostComments(@Param('id') id: string) {
     return this.aboardService.getPostComments(id);
   }
 
+  // Create a comment for a post
   @Post('posts/:id/comments')
   async createComment(
     @Param('id') id: string,
@@ -53,6 +65,7 @@ export class AboardController {
     return this.aboardService.createComment(id, createCommentDto);
   }
 
+  // Update a post
   @Put('posts/:id')
   async updatePost(
     @Param('id') id: string,
@@ -61,6 +74,7 @@ export class AboardController {
     return this.aboardService.updatePost(id, updatePostDto);
   }
 
+  // Delete a post
   @Delete('posts/:id')
   async deletePost(@Param('id') id: string) {
     return this.aboardService.deletePost(id);
