@@ -6,6 +6,7 @@ import { Comment } from './schemas/comment.schema';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class AboardService {
@@ -36,24 +37,6 @@ export class AboardService {
       return error;
     }
   }
-
-  // Fetch posts from the database by username
-  // async getPostsByUsername(username: string): Promise<Post[]> {
-  //   return this.postModel
-  //     .find({ username }) // Find posts where username matches
-  //     .sort({ createdAt: -1 }) // Sort by 'createdAt' field in descending order
-  //     .limit(30) // Limit the results to 30 posts
-  //     .exec(); // Execute the query
-  // }
-
-  // // Fetch all posts
-  // async getPosts(): Promise<Post[]> {
-  //   return this.postModel
-  //     .find() // Find all posts
-  //     .sort({ createdAt: -1 }) // Sort by 'createdAt' field in descending order
-  //     .limit(30) // Limit the results to 30 posts
-  //     .exec(); // Execute the query
-  // }
 
   async getPostsByUsername(username: string): Promise<Post[]> {
     const posts = await this.postModel.aggregate([
@@ -108,29 +91,20 @@ export class AboardService {
     return createdPost.save();
   }
 
-  // // Fetch a single post by ID
-  // async getPost(id: string): Promise<Post> {
-  //   return this.postModel.findById(id).exec();
-  // }
-
   // Fetch a single post by ID with populated comments data
   async getPost(id: string): Promise<Post> {
     return this.postModel.findById(id).exec();
   }
 
-  // Fetch comments for a specific post
-  // async getPostComments(postId: string): Promise<Comment[]> {
-  //   return this.commentModel.find({ postId }).exec();
-  // }
-
   async getPostComments(postId: string): Promise<Comment[]> {
     try {
-      // Find comments by postId and sort them by createdAt in descending order (newest first)
+      const objectId = new mongoose.Types.ObjectId(postId);
       const comments = await this.commentModel
-        .find({ postId })
+        .find({ postId: objectId })
         .sort({ createdAt: -1 }) // Sort by createdAt in descending order
         .exec();
 
+      console.log('comments', comments, postId);
       return comments;
     } catch (error) {
       // Handle any errors that occur during the query
