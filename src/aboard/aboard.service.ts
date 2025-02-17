@@ -38,21 +38,68 @@ export class AboardService {
   }
 
   // Fetch posts from the database by username
+  // async getPostsByUsername(username: string): Promise<Post[]> {
+  //   return this.postModel
+  //     .find({ username }) // Find posts where username matches
+  //     .sort({ createdAt: -1 }) // Sort by 'createdAt' field in descending order
+  //     .limit(30) // Limit the results to 30 posts
+  //     .exec(); // Execute the query
+  // }
+
+  // // Fetch all posts
+  // async getPosts(): Promise<Post[]> {
+  //   return this.postModel
+  //     .find() // Find all posts
+  //     .sort({ createdAt: -1 }) // Sort by 'createdAt' field in descending order
+  //     .limit(30) // Limit the results to 30 posts
+  //     .exec(); // Execute the query
+  // }
+
   async getPostsByUsername(username: string): Promise<Post[]> {
-    return this.postModel
-      .find({ username }) // Find posts where username matches
-      .sort({ createdAt: -1 }) // Sort by 'createdAt' field in descending order
-      .limit(30) // Limit the results to 30 posts
-      .exec(); // Execute the query
+    const posts = await this.postModel.aggregate([
+      { $match: { username } }, // Match posts by username
+      { $sort: { createdAt: -1 } }, // Sort by 'createdAt' field in descending order
+      { $limit: 30 }, // Limit the results to 30 posts
+      {
+        $lookup: {
+          from: 'comments', // The collection for comments (Mongoose uses lowercase and plural)
+          localField: '_id',
+          foreignField: 'postId',
+          as: 'comments', // Create the comments array in the result
+        },
+      },
+      {
+        $addFields: {
+          commentCount: { $size: '$comments' }, // Add a field with the count of comments
+        },
+      },
+      { $project: { comments: 0 } }, // Optionally remove the comments array from the result
+    ]);
+
+    return posts as Post[];
   }
 
-  // Fetch all posts
   async getPosts(): Promise<Post[]> {
-    return this.postModel
-      .find() // Find all posts
-      .sort({ createdAt: -1 }) // Sort by 'createdAt' field in descending order
-      .limit(30) // Limit the results to 30 posts
-      .exec(); // Execute the query
+    const posts = await this.postModel.aggregate([
+      { $sort: { createdAt: -1 } }, // Sort by 'createdAt' field in descending order
+      { $limit: 30 }, // Limit the results to 30 posts
+      {
+        $lookup: {
+          from: 'comments', // The collection for comments (Mongoose uses lowercase and plural)
+          localField: '_id',
+          foreignField: 'postId',
+          as: 'comments', // Create the comments array in the result
+        },
+      },
+      {
+        $addFields: {
+          commentCount: { $size: '$comments' }, // Add a field with the count of comments
+        },
+      },
+      { $project: { comments: 0 } }, // Optionally remove the comments array from the result
+    ]);
+
+    return posts as Post[];
   }
 
   // Create a new post
