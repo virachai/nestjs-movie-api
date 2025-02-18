@@ -11,20 +11,20 @@ import { AboardService } from './aboard.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { SignInDto } from '../auth/dto/sign-in.dto'; // Import the DTO for sign-in
+// import { SignInDto } from '../auth/dto/sign-in.dto';
 
 @Controller('aboard')
 export class AboardController {
   constructor(private readonly aboardService: AboardService) {}
 
   // Sign in endpoint
-  @Post('auth')
-  signIn(@Body() signInDto: SignInDto) {
-    return this.aboardService.authenticate(
-      signInDto.username,
-      signInDto.password,
-    );
-  }
+  // @Post('auth')
+  // signIn(@Body() signInDto: SignInDto) {
+  //   return this.aboardService.authenticate(
+  //     signInDto.username,
+  //     signInDto.password,
+  //   );
+  // }
 
   // Get all posts
   @Get('posts')
