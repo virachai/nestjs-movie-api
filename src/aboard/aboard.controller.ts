@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AboardService } from './aboard.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -17,26 +18,36 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 export class AboardController {
   constructor(private readonly aboardService: AboardService) {}
 
-  // Sign in endpoint
-  // @Post('auth')
-  // signIn(@Body() signInDto: SignInDto) {
-  //   return this.aboardService.authenticate(
-  //     signInDto.username,
-  //     signInDto.password,
-  //   );
+  // // Get all posts
+  // @Get('posts')
+  // async getPosts() {
+  //   return this.aboardService.getPosts();
   // }
 
-  // Get all posts
   @Get('posts')
-  async getPosts() {
-    return this.aboardService.getPosts();
+  async getPosts(
+    @Query('page') page: number = 1,
+    @Query('query') query: string = '',
+    @Query('tag') tag: string = '',
+  ) {
+    return this.aboardService.getPosts(page, query, tag);
   }
 
-  // Get posts by username
   @Get('user/:username/posts')
-  async getPostsByUsername(@Param('username') username: string) {
-    return this.aboardService.getPostsByUsername(username);
+  async getPostsByUsername(
+    @Param('username') username: string, // Get username from the URL params
+    @Query('page') page: number = 1, // Get page from query string (default 1)
+    @Query('query') query: string = '', // Get query from query string (default empty)
+    @Query('tag') tag: string = '', // Get tag from query string (default empty)
+  ) {
+    return this.aboardService.getPostsByUsername(username, page, query, tag);
   }
+
+  // // Get posts by username
+  // @Get('user/:username/posts')
+  // async getPostsByUsername(@Param('username') username: string) {
+  //   return this.aboardService.getPostsByUsername(username);
+  // }
 
   // Create a new post
   @Post('posts')

@@ -38,17 +38,47 @@ export class AboardService {
     }
   }
 
-  async getPostsByUsername(username: string): Promise<Post[]> {
+  async getPostsByUsername(
+    username: string,
+    page: number = 1,
+    query: string = '',
+    tag: string = '',
+  ): Promise<Post[]> {
+    const pageSize = 30; // Number of posts per page
+    const skip = (page - 1) * pageSize;
+
+    // Build the filter criteria for searching
+    const match: {
+      $or?: (
+        | { title: { $regex: string; $options: string } }
+        | { content: { $regex: string; $options: string } }
+      )[];
+      tags?: { $in: string[] };
+      username?: string; // Filter by username
+    } = { username }; // Always filter by the provided username
+
+    if (query) {
+      match.$or = [
+        { title: { $regex: query, $options: 'i' } }, // Case-insensitive search in title
+        { content: { $regex: query, $options: 'i' } }, // Case-insensitive search in content
+      ];
+    }
+
+    if (tag) {
+      match.tags = { $in: [tag] }; // Filter by tags if provided
+    }
+
     const posts = await this.postModel.aggregate([
-      { $match: { username } }, // Match posts by username
+      { $match: match }, // Apply the filter criteria (username, query, and tag)
       { $sort: { createdAt: -1 } }, // Sort by 'createdAt' field in descending order
-      { $limit: 30 }, // Limit the results to 30 posts
+      { $skip: skip }, // Skip the posts based on the page number
+      { $limit: pageSize }, // Limit the results to the page size
       {
         $lookup: {
-          from: 'comments', // The collection for comments (Mongoose uses lowercase and plural)
+          from: 'comments', // The collection for comments
           localField: '_id',
           foreignField: 'postId',
-          as: 'comments', // Create the comments array in the result
+          as: 'comments',
         },
       },
       {
@@ -62,16 +92,92 @@ export class AboardService {
     return posts as Post[];
   }
 
-  async getPosts(): Promise<Post[]> {
+  // async getPostsByUsername(username: string): Promise<Post[]> {
+  //   const posts = await this.postModel.aggregate([
+  //     { $match: { username } }, // Match posts by username
+  //     { $sort: { createdAt: -1 } }, // Sort by 'createdAt' field in descending order
+  //     { $limit: 30 }, // Limit the results to 30 posts
+  //     {
+  //       $lookup: {
+  //         from: 'comments', // The collection for comments (Mongoose uses lowercase and plural)
+  //         localField: '_id',
+  //         foreignField: 'postId',
+  //         as: 'comments', // Create the comments array in the result
+  //       },
+  //     },
+  //     {
+  //       $addFields: {
+  //         commentCount: { $size: '$comments' }, // Add a field with the count of comments
+  //       },
+  //     },
+  //     { $project: { comments: 0 } }, // Optionally remove the comments array from the result
+  //   ]);
+
+  //   return posts as Post[];
+  // }
+
+  // async getPosts(): Promise<Post[]> {
+  //   const posts = await this.postModel.aggregate([
+  //     { $sort: { createdAt: -1 } }, // Sort by 'createdAt' field in descending order
+  //     { $limit: 30 }, // Limit the results to 30 posts
+  //     {
+  //       $lookup: {
+  //         from: 'comments', // The collection for comments (Mongoose uses lowercase and plural)
+  //         localField: '_id',
+  //         foreignField: 'postId',
+  //         as: 'comments', // Create the comments array in the result
+  //       },
+  //     },
+  //     {
+  //       $addFields: {
+  //         commentCount: { $size: '$comments' }, // Add a field with the count of comments
+  //       },
+  //     },
+  //     { $project: { comments: 0 } }, // Optionally remove the comments array from the result
+  //   ]);
+
+  //   return posts as Post[];
+  // }
+
+  async getPosts(
+    page: number = 1,
+    query: string = '',
+    tag: string = '',
+  ): Promise<Post[]> {
+    const pageSize = 30; // Number of posts per page
+    const skip = (page - 1) * pageSize;
+
+    // Build the filter criteria for searching
+    const match: {
+      $or?: (
+        | { title: { $regex: string; $options: string } }
+        | { content: { $regex: string; $options: string } }
+      )[];
+      tags?: { $in: string[] };
+    } = {};
+
+    if (query) {
+      match.$or = [
+        { title: { $regex: query, $options: 'i' } }, // Case-insensitive search in title
+        { content: { $regex: query, $options: 'i' } }, // Case-insensitive search in content
+      ];
+    }
+
+    if (tag) {
+      match.tags = { $in: [tag] }; // Filter by tags if provided
+    }
+
     const posts = await this.postModel.aggregate([
+      { $match: match }, // Apply the filter criteria (query and tag)
       { $sort: { createdAt: -1 } }, // Sort by 'createdAt' field in descending order
-      { $limit: 30 }, // Limit the results to 30 posts
+      { $skip: skip }, // Skip the posts based on the page number
+      { $limit: pageSize }, // Limit the results to the page size
       {
         $lookup: {
-          from: 'comments', // The collection for comments (Mongoose uses lowercase and plural)
+          from: 'comments', // The collection for comments
           localField: '_id',
           foreignField: 'postId',
-          as: 'comments', // Create the comments array in the result
+          as: 'comments',
         },
       },
       {
