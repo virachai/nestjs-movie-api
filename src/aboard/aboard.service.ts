@@ -103,8 +103,6 @@ export class AboardService {
         .find({ postId: objectId })
         .sort({ createdAt: -1 }) // Sort by createdAt in descending order
         .exec();
-
-      console.log('comments', comments, postId);
       return comments;
     } catch (error) {
       // Handle any errors that occur during the query
@@ -120,7 +118,7 @@ export class AboardService {
   ): Promise<Comment> {
     const createdComment = new this.commentModel({
       ...createCommentDto,
-      postId,
+      postId: new mongoose.Types.ObjectId(postId),
     });
     return createdComment.save();
   }
