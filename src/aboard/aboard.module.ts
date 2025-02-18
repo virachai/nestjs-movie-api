@@ -28,11 +28,11 @@ export class AboardModule implements NestModule {
         method: RequestMethod.POST,
       },
       {
-        path: 'aboard/posts',
+        path: 'aboard/posts/:id',
         method: RequestMethod.PUT,
       },
       {
-        path: 'aboard/posts',
+        path: 'aboard/posts/:id',
         method: RequestMethod.DELETE,
       },
       {
