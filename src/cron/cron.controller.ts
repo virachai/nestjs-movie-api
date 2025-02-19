@@ -7,10 +7,20 @@ export class CronController {
 
   @Get('keep-alive')
   async keepAlive() {
+    const startTime = Date.now();
+
     const { db } = await this.databaseService.connectToDatabase();
     const collection = db.collection('planets');
     const data = await collection.find({}).toArray();
 
-    return { message: 'Cron job executed successfully!', data };
+    const endTime = Date.now();
+
+    const duration = endTime - startTime;
+
+    return {
+      message: 'Cron job executed successfully!',
+      data,
+      executionTime: `${duration} ms`,
+    };
   }
 }
