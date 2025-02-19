@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { MoviesModule } from './movies/movies.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AboardModule } from './aboard/aboard.module';
+import { CronController } from './cron/cron.controller';
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ const dbURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce';
     AuthModule,
     MoviesModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, CronController],
   providers: [AppService],
 })
 export class AppModule {}
