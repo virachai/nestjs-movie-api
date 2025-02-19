@@ -17,7 +17,9 @@ export class DatabaseService {
       return { client: this.cachedClient, db: this.cachedDb };
     }
 
-    const client = await MongoClient.connect(this.dbURI);
+    const client = await MongoClient.connect(this.dbURI, {
+      maxIdleTimeMS: 1000 * 60 * 6,
+    });
 
     const db = client.db('sample_guides');
 
