@@ -1,4 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('cron')
-export class CronController {}
+export class CronController {
+  @Get('keep-alive')
+  keepAlive() {
+    return { message: 'Cron job executed successfully!' };
+  }
+}
